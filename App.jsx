@@ -862,8 +862,8 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
   
   const [otherPolicyFields, setOtherPolicyFields] = useState({
     pafVsInvoice: {
-      pafCost: 'RM 1,500.00',
-      totalInvoiceCost: 'RM 1,450.00',
+      pafCost: 'RM 10,000.00',
+      totalInvoiceCost: 'RM 17,773.20',
       approved: false,
       rejected: false,
       rejectionReason: '',
@@ -997,10 +997,10 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
   
   const lineItems = [
     { label: 'Pharmacy Items', value: 'CETAPHIL MOISTURIZING LOTION 200ML OTC', status: 'Out of policy', flagged: true, reason: 'Flagged because the total number of prescribed Panadol is exceeding the allocated limit for 1 Month' },
-    { label: 'Medical Services', value: 'RECEPTIVE AND EXPRESSIVE LANGUAGE INTERVENTION', status: 'Out of policy', flagged: true, reason: 'Flagged because the total number of prescribed Panadol is exceeding the allocated limit for 1 Month' },
-    { label: 'Medical Services', value: 'MOTOR SPEECH DISORDER INTERVENTION', status: 'Out of policy', flagged: true, reason: 'Flagged because the total number of prescribed Panadol is exceeding the allocated limit for 1 Month' },
+    { label: 'Pharmacy Items', value: 'MIDAZOLAM INJ 5MG/ML', status: 'Out of policy', flagged: true, reason: 'Flagged because the total number of prescribed Panadol is exceeding the allocated limit for 1 Month' },
+    { label: 'Medical Services', value: 'DOCTOR ', status: 'Out of policy', flagged: true, reason: 'Flagged because the total number of prescribed Panadol is exceeding the allocated limit for 1 Month' },
     { label: 'Medical Services', value: 'SOCIO / COGNITIVE COMMUNICATION INTERVENTION', status: 'Out of policy', flagged: true, reason: 'Flagged because the total number of prescribed Panadol is exceeding the allocated limit for 1 Month' },
-    { label: 'Consultation Fee', value: 'CONSULTATION CHARGE UNDER DR SARAVANAN', status: 'Exceeded coverage limit', flagged: true, reason: 'Flagged because the total number of prescribed Panadol is exceeding the allocated limit for 1 Month' }
+    { label: 'Consultation Fee', value: 'ED PATIENT VISIT OFFICE HOURS', status: 'Exceeded coverage limit', flagged: true, reason: 'Flagged because the total number of prescribed Panadol is exceeding the allocated limit for 1 Month' }
   ];
   
   const handleInfoClick = (event, reason) => {
@@ -2251,9 +2251,6 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
             <div className="flex gap-4">
               <button className="text-blue-600 hover:text-blue-800 font-semibold hover:underline transition-colors">
                 Query File
-              </button>
-              <button className="bg-white border-2 border-gray-300 text-gray-700 px-6 py-2.5 rounded-lg hover:bg-gray-50 hover:border-gray-400 font-semibold transition-all shadow-sm">
-                Generate
               </button>
               <button
                 onClick={handleSaveDraft}
