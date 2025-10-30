@@ -325,35 +325,35 @@ const DashboardScreen = ({ onDocumentClick }) => {
   const allDocumentsData = {
     'All': [
       { id: '1387452', fileName: 'invoice-medical-2024...', pendingAge: '200', status: 'In Progress', owner: 'name@mail.com', receivedOn: '2025-07-21, 18:45', modifiedOn: '2025-07-21, 19:15', modifiedBy: 'name@mail.com' },
-      { id: '1387453', fileName: 'guarantee-letter-abc...', pendingAge: '180', status: 'Not Started', owner: 'john@mail.com', receivedOn: '2025-07-21, 17:30', modifiedOn: '2025-07-21, 18:00', modifiedBy: 'john@mail.com' },
-      { id: '1387454', fileName: 'pre-admission-form...', pendingAge: '150', status: 'Not Started', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 16:20', modifiedOn: '2025-07-21, 16:45', modifiedBy: 'sarah@mail.com' },
-      { id: '1387455', fileName: 'invoice-pharmacy...', pendingAge: '120', status: 'Not Started', owner: 'mike@mail.com', receivedOn: '2025-07-21, 15:45', modifiedOn: '2025-07-21, 16:10', modifiedBy: 'mike@mail.com' },
+  { id: '1387453', fileName: 'guarantee-letter-abc...', pendingAge: '180', status: 'Not Started', owner: 'john@mail.com', receivedOn: '2025-07-21, 17:30', modifiedOn: '', modifiedBy: '' },
+  { id: '1387454', fileName: 'pre-admission-form...', pendingAge: '150', status: 'Not Started', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 16:20', modifiedOn: '', modifiedBy: '' },
+  { id: '1387455', fileName: 'invoice-pharmacy...', pendingAge: '120', status: 'Not Started', owner: 'mike@mail.com', receivedOn: '2025-07-21, 15:45', modifiedOn: '', modifiedBy: '' },
       { id: '1387456', fileName: 'medical-report-xyz...', pendingAge: '100', status: 'Completed', owner: 'lisa@mail.com', receivedOn: '2025-07-21, 14:30', modifiedOn: '2025-07-21, 15:00', modifiedBy: 'lisa@mail.com' },
-      { id: '1387457', fileName: 'claim-form-2024...', pendingAge: '80', status: 'Not Started', owner: 'name@mail.com', receivedOn: '2025-07-21, 13:15', modifiedOn: '2025-07-21, 13:45', modifiedBy: 'name@mail.com' },
+  { id: '1387457', fileName: 'claim-form-2024...', pendingAge: '80', status: 'Not Started', owner: 'name@mail.com', receivedOn: '2025-07-21, 13:15', modifiedOn: '', modifiedBy: '' },
       { id: '1387458', fileName: 'receipt-consultation...', pendingAge: '60', status: 'Completed', owner: 'admin@mail.com', receivedOn: '2025-07-21, 12:00', modifiedOn: '2025-07-21, 12:30', modifiedBy: 'admin@mail.com' },
       { id: '1387459', fileName: 'lab-results-patient...', pendingAge: '45', status: 'In Progress', owner: 'john@mail.com', receivedOn: '2025-07-21, 11:30', modifiedOn: '2025-07-21, 12:00', modifiedBy: 'john@mail.com' },
       { id: '1387460', fileName: 'insurance-verification...', pendingAge: '30', status: 'Completed', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 10:45', modifiedOn: '2025-07-21, 11:15', modifiedBy: 'sarah@mail.com' },
-      { id: '1387461', fileName: 'billing-statement...', pendingAge: '25', status: 'Not Started', owner: 'mike@mail.com', receivedOn: '2025-07-21, 10:00', modifiedOn: '2025-07-21, 10:30', modifiedBy: 'mike@mail.com' },
-      { id: '1387462', fileName: 'referral-letter-dr...', pendingAge: '20', status: 'Not Started', owner: 'lisa@mail.com', receivedOn: '2025-07-21, 09:30', modifiedOn: '2025-07-21, 10:00', modifiedBy: 'lisa@mail.com' },
+  { id: '1387461', fileName: 'billing-statement...', pendingAge: '25', status: 'Not Started', owner: 'mike@mail.com', receivedOn: '2025-07-21, 10:00', modifiedOn: '', modifiedBy: '' },
+  { id: '1387462', fileName: 'referral-letter-dr...', pendingAge: '20', status: 'Not Started', owner: 'lisa@mail.com', receivedOn: '2025-07-21, 09:30', modifiedOn: '', modifiedBy: '' },
       { id: '1387463', fileName: 'prescription-scan...', pendingAge: '15', status: 'Completed', owner: 'name@mail.com', receivedOn: '2025-07-21, 09:00', modifiedOn: '2025-07-21, 09:30', modifiedBy: 'name@mail.com' },
-      { id: '1387464', fileName: 'discharge-summary...', pendingAge: '12', status: 'Not Started', owner: 'john@mail.com', receivedOn: '2025-07-21, 08:45', modifiedOn: '2025-07-21, 09:15', modifiedBy: 'john@mail.com' },
+  { id: '1387464', fileName: 'discharge-summary...', pendingAge: '12', status: 'Not Started', owner: 'john@mail.com', receivedOn: '2025-07-21, 08:45', modifiedOn: '', modifiedBy: '' },
       { id: '1387465', fileName: 'follow-up-notes...', pendingAge: '8', status: 'In Progress', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 08:20', modifiedOn: '2025-07-21, 08:50', modifiedBy: 'sarah@mail.com' },
       { id: '1387466', fileName: 'payment-receipt...', pendingAge: '5', status: 'In Progress', owner: 'mike@mail.com', receivedOn: '2025-07-21, 08:00', modifiedOn: '2025-07-21, 08:30', modifiedBy: 'mike@mail.com' },
       { id: '1387467', fileName: 'surgery-report...', pendingAge: '3', status: 'Completed', owner: 'lisa@mail.com', receivedOn: '2025-07-21, 07:30', modifiedOn: '2025-07-21, 08:00', modifiedBy: 'lisa@mail.com' },
       { id: '1387468', fileName: 'therapy-notes...', pendingAge: '90', status: 'In Progress', owner: 'john@mail.com', receivedOn: '2025-07-21, 06:45', modifiedOn: '2025-07-21, 07:15', modifiedBy: 'john@mail.com' },
       { id: '1387469', fileName: 'consultation-fee...', pendingAge: '70', status: 'In Progress', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 06:00', modifiedOn: '2025-07-21, 06:30', modifiedBy: 'sarah@mail.com' },
       { id: '1387470', fileName: 'ambulance-receipt...', pendingAge: '50', status: 'In Progress', owner: 'mike@mail.com', receivedOn: '2025-07-21, 05:30', modifiedOn: '2025-07-21, 06:00', modifiedBy: 'mike@mail.com' },
-      { id: '1387471', fileName: 'rehab-program...', pendingAge: '40', status: 'Not Started', owner: 'name@mail.com', receivedOn: '2025-07-21, 05:00', modifiedOn: '2025-07-21, 05:30', modifiedBy: 'name@mail.com' }
+  { id: '1387471', fileName: 'rehab-program...', pendingAge: '40', status: 'Not Started', owner: 'name@mail.com', receivedOn: '2025-07-21, 05:00', modifiedOn: '', modifiedBy: '' }
     ],
     'Not Started': [
-      { id: '1387453', fileName: 'guarantee-letter-abc...', pendingAge: '180', status: 'Not Started', owner: 'john@mail.com', receivedOn: '2025-07-21, 17:30', modifiedOn: '2025-07-21, 18:00', modifiedBy: 'john@mail.com' },
-      { id: '1387454', fileName: 'pre-admission-form...', pendingAge: '150', status: 'Not Started', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 16:20', modifiedOn: '2025-07-21, 16:45', modifiedBy: 'sarah@mail.com' },
-      { id: '1387455', fileName: 'invoice-pharmacy...', pendingAge: '120', status: 'Not Started', owner: 'mike@mail.com', receivedOn: '2025-07-21, 15:45', modifiedOn: '2025-07-21, 16:10', modifiedBy: 'mike@mail.com' },
-      { id: '1387457', fileName: 'claim-form-2024...', pendingAge: '80', status: 'Not Started', owner: 'name@mail.com', receivedOn: '2025-07-21, 13:15', modifiedOn: '2025-07-21, 13:45', modifiedBy: 'name@mail.com' },
-      { id: '1387461', fileName: 'billing-statement...', pendingAge: '25', status: 'Not Started', owner: 'mike@mail.com', receivedOn: '2025-07-21, 10:00', modifiedOn: '2025-07-21, 10:30', modifiedBy: 'mike@mail.com' },
-      { id: '1387462', fileName: 'referral-letter-dr...', pendingAge: '20', status: 'Not Started', owner: 'lisa@mail.com', receivedOn: '2025-07-21, 09:30', modifiedOn: '2025-07-21, 10:00', modifiedBy: 'lisa@mail.com' },
-      { id: '1387464', fileName: 'discharge-summary...', pendingAge: '12', status: 'Not Started', owner: 'john@mail.com', receivedOn: '2025-07-21, 08:45', modifiedOn: '2025-07-21, 09:15', modifiedBy: 'john@mail.com' },
-      { id: '1387471', fileName: 'rehab-program...', pendingAge: '40', status: 'Not Started', owner: 'name@mail.com', receivedOn: '2025-07-21, 05:00', modifiedOn: '2025-07-21, 05:30', modifiedBy: 'name@mail.com' }
+  { id: '1387453', fileName: 'guarantee-letter-abc...', pendingAge: '180', status: 'Not Started', owner: 'john@mail.com', receivedOn: '2025-07-21, 17:30', modifiedOn: '', modifiedBy: '' },
+  { id: '1387454', fileName: 'pre-admission-form...', pendingAge: '150', status: 'Not Started', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 16:20', modifiedOn: '', modifiedBy: '' },
+  { id: '1387455', fileName: 'invoice-pharmacy...', pendingAge: '120', status: 'Not Started', owner: 'mike@mail.com', receivedOn: '2025-07-21, 15:45', modifiedOn: '', modifiedBy: '' },
+  { id: '1387457', fileName: 'claim-form-2024...', pendingAge: '80', status: 'Not Started', owner: 'name@mail.com', receivedOn: '2025-07-21, 13:15', modifiedOn: '', modifiedBy: '' },
+  { id: '1387461', fileName: 'billing-statement...', pendingAge: '25', status: 'Not Started', owner: 'mike@mail.com', receivedOn: '2025-07-21, 10:00', modifiedOn: '', modifiedBy: '' },
+  { id: '1387462', fileName: 'referral-letter-dr...', pendingAge: '20', status: 'Not Started', owner: 'lisa@mail.com', receivedOn: '2025-07-21, 09:30', modifiedOn: '', modifiedBy: '' },
+  { id: '1387464', fileName: 'discharge-summary...', pendingAge: '12', status: 'Not Started', owner: 'john@mail.com', receivedOn: '2025-07-21, 08:45', modifiedOn: '', modifiedBy: '' },
+  { id: '1387471', fileName: 'rehab-program...', pendingAge: '40', status: 'Not Started', owner: 'name@mail.com', receivedOn: '2025-07-21, 05:00', modifiedOn: '', modifiedBy: '' }
     ],
     'In Progress': [
       { id: '1387452', fileName: 'invoice-medical-2024...', pendingAge: '200', status: 'In Progress', owner: 'name@mail.com', receivedOn: '2025-07-21, 18:45', modifiedOn: '2025-07-21, 19:15', modifiedBy: 'name@mail.com' },
@@ -775,7 +775,7 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
   // Guideline dropdown options
   const guidelineOptions = [
     {
-      name: '5TH MMA FEE -EDITION',
+      name: '5TH MMA fee - edition',
       url: 'https://ts.accenture.com/:b:/r/sites/AAAMSDelivery/Shared%20Documents/General/02%20App%20Development%20(AD)/2025%20-%2001%20-%20Healthcare%20Digitization/Functional_Docs/TNB%20Medical%20Guidelines%20and%20Fees/5TH%20MMA%20FEE%20-EDITION-VERSION-2.0-2020.pdf?csf=1&web=1&e=Txu6GV'
     },
     {
@@ -787,7 +787,7 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
       url: 'https://ts.accenture.com/:x:/r/sites/AAAMSDelivery/Shared%20Documents/General/02%20App%20Development%20(AD)/2025%20-%2001%20-%20Healthcare%20Digitization/Functional_Docs/TNB%20Medical%20Guidelines%20and%20Fees/Final%20Bill%20Assessment%20Guidelines%20Edited%2009072025.xlsx?d=w8c21e340a447460e9a4be78eaa29732f&csf=1&web=1&e=hjg1E6'
     },
     {
-      name: 'MEDICAL GUIDELINES',
+      name: 'Medical Guidelines',
       url: 'https://ts.accenture.com/:b:/r/sites/AAAMSDelivery/Shared%20Documents/General/02%20App%20Development%20(AD)/2025%20-%2001%20-%20Healthcare%20Digitization/Functional_Docs/TNB%20Medical%20Guidelines%20and%20Fees/MEDICAL%20GUIDELINES%20HOSP%20VER%204.0.pdf?csf=1&web=1&e=nyJDFs'
     }
   ];
