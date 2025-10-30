@@ -159,16 +159,15 @@ const DashboardScreen = ({ onDocumentClick }) => {
     dateTo: ''
   });
   
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  
   const tabs = [
     { name: 'All', count: '20' },
-    { name: 'In-Progress', count: '03' },
-    { name: 'Pending Validation', count: '04' },
-    { name: 'System Process', count: '02' },
-    { name: 'Pending Pickup', count: '03' },
-    { name: 'Approved', count: '03' },
-    { name: 'Rejected', count: '02' },
-    { name: 'Closed', count: '02' },
-    { name: 'No Anomalies', count: '01' }
+    { name: 'Not Started', count: '08' },
+    { name: 'In Progress', count: '07' },
+    { name: 'Completed', count: '05' }
   ];
   
   const getStatusStyles = (status) => {
@@ -187,6 +186,10 @@ const DashboardScreen = ({ onDocumentClick }) => {
   
   const getStatusColor = (status) => {
     const colors = {
+      'Not Started': 'bg-gray-100 text-gray-700',
+      'In Progress': 'bg-blue-100 text-blue-700',
+      'Completed': 'bg-green-100 text-green-700',
+      // Legacy status colors (in case any remain)
       'Captured': 'bg-blue-100 text-blue-700',
       'QA': 'bg-yellow-100 text-yellow-700',
       'Uploaded': 'bg-gray-100 text-gray-700',
@@ -272,68 +275,113 @@ const DashboardScreen = ({ onDocumentClick }) => {
     return filtered;
   };
   
+  // Pagination functions
+  const getPaginatedDocuments = (documents) => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return documents.slice(startIndex, endIndex);
+  };
+  
+  const getTotalPages = (documentsLength) => {
+    return Math.ceil(documentsLength / itemsPerPage);
+  };
+  
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+  
+  const handleItemsPerPageChange = (newItemsPerPage) => {
+    setItemsPerPage(newItemsPerPage);
+    setCurrentPage(1); // Reset to first page when changing items per page
+  };
+  
+  const getPageNumbers = (totalPages) => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 5; i++) {
+          pages.push(i);
+        }
+      } else if (currentPage >= totalPages - 2) {
+        for (let i = totalPages - 4; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        for (let i = currentPage - 2; i <= currentPage + 2; i++) {
+          pages.push(i);
+        }
+      }
+    }
+    
+    return pages;
+  };
+  
   const allDocumentsData = {
     'All': [
-      { id: '1387452', fileName: 'invoice-medical-2024...', pendingAge: '200', status: 'In-Progress', owner: 'name@mail.com', receivedOn: '2025-07-21, 18:45', modifiedOn: '2025-07-21, 19:15', modifiedBy: 'name@mail.com' },
-      { id: '1387453', fileName: 'guarantee-letter-abc...', pendingAge: '180', status: 'Pending Validation', owner: 'john@mail.com', receivedOn: '2025-07-21, 17:30', modifiedOn: '2025-07-21, 18:00', modifiedBy: 'john@mail.com' },
-      { id: '1387454', fileName: 'pre-admission-form...', pendingAge: '150', status: 'System Process', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 16:20', modifiedOn: '2025-07-21, 16:45', modifiedBy: 'sarah@mail.com' },
-      { id: '1387455', fileName: 'invoice-pharmacy...', pendingAge: '120', status: 'Pending Pickup', owner: 'mike@mail.com', receivedOn: '2025-07-21, 15:45', modifiedOn: '2025-07-21, 16:10', modifiedBy: 'mike@mail.com' },
-      { id: '1387456', fileName: 'medical-report-xyz...', pendingAge: '100', status: 'Approved', owner: 'lisa@mail.com', receivedOn: '2025-07-21, 14:30', modifiedOn: '2025-07-21, 15:00', modifiedBy: 'lisa@mail.com' },
-      { id: '1387457', fileName: 'claim-form-2024...', pendingAge: '80', status: 'Pending Validation', owner: 'name@mail.com', receivedOn: '2025-07-21, 13:15', modifiedOn: '2025-07-21, 13:45', modifiedBy: 'name@mail.com' },
-      { id: '1387458', fileName: 'receipt-consultation...', pendingAge: '60', status: 'Rejected', owner: 'admin@mail.com', receivedOn: '2025-07-21, 12:00', modifiedOn: '2025-07-21, 12:30', modifiedBy: 'admin@mail.com' },
-      { id: '1387459', fileName: 'lab-results-patient...', pendingAge: '45', status: 'In-Progress', owner: 'john@mail.com', receivedOn: '2025-07-21, 11:30', modifiedOn: '2025-07-21, 12:00', modifiedBy: 'john@mail.com' },
-      { id: '1387460', fileName: 'insurance-verification...', pendingAge: '30', status: 'Closed', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 10:45', modifiedOn: '2025-07-21, 11:15', modifiedBy: 'sarah@mail.com' },
-      { id: '1387461', fileName: 'billing-statement...', pendingAge: '25', status: 'Pending Pickup', owner: 'mike@mail.com', receivedOn: '2025-07-21, 10:00', modifiedOn: '2025-07-21, 10:30', modifiedBy: 'mike@mail.com' },
-      { id: '1387462', fileName: 'referral-letter-dr...', pendingAge: '20', status: 'Pending Validation', owner: 'lisa@mail.com', receivedOn: '2025-07-21, 09:30', modifiedOn: '2025-07-21, 10:00', modifiedBy: 'lisa@mail.com' },
-      { id: '1387463', fileName: 'prescription-scan...', pendingAge: '15', status: 'Approved', owner: 'name@mail.com', receivedOn: '2025-07-21, 09:00', modifiedOn: '2025-07-21, 09:30', modifiedBy: 'name@mail.com' },
-      { id: '1387464', fileName: 'discharge-summary...', pendingAge: '12', status: 'Pending Validation', owner: 'john@mail.com', receivedOn: '2025-07-21, 08:45', modifiedOn: '2025-07-21, 09:15', modifiedBy: 'john@mail.com' },
-      { id: '1387465', fileName: 'follow-up-notes...', pendingAge: '8', status: 'System Process', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 08:20', modifiedOn: '2025-07-21, 08:50', modifiedBy: 'sarah@mail.com' },
-      { id: '1387466', fileName: 'payment-receipt...', pendingAge: '5', status: 'In-Progress', owner: 'mike@mail.com', receivedOn: '2025-07-21, 08:00', modifiedOn: '2025-07-21, 08:30', modifiedBy: 'mike@mail.com' },
-      { id: '1387467', fileName: 'surgery-report...', pendingAge: '3', status: 'No Anomalies', owner: 'lisa@mail.com', receivedOn: '2025-07-21, 07:30', modifiedOn: '2025-07-21, 08:00', modifiedBy: 'lisa@mail.com' },
-      { id: '1387468', fileName: 'therapy-notes...', pendingAge: '90', status: 'Approved', owner: 'john@mail.com', receivedOn: '2025-07-21, 06:45', modifiedOn: '2025-07-21, 07:15', modifiedBy: 'john@mail.com' },
-      { id: '1387469', fileName: 'consultation-fee...', pendingAge: '70', status: 'Rejected', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 06:00', modifiedOn: '2025-07-21, 06:30', modifiedBy: 'sarah@mail.com' },
-      { id: '1387470', fileName: 'ambulance-receipt...', pendingAge: '50', status: 'Closed', owner: 'mike@mail.com', receivedOn: '2025-07-21, 05:30', modifiedOn: '2025-07-21, 06:00', modifiedBy: 'mike@mail.com' },
-      { id: '1387471', fileName: 'rehab-program...', pendingAge: '40', status: 'Pending Pickup', owner: 'name@mail.com', receivedOn: '2025-07-21, 05:00', modifiedOn: '2025-07-21, 05:30', modifiedBy: 'name@mail.com' }
+      { id: '1387452', fileName: 'invoice-medical-2024...', pendingAge: '200', status: 'In Progress', owner: 'name@mail.com', receivedOn: '2025-07-21, 18:45', modifiedOn: '2025-07-21, 19:15', modifiedBy: 'name@mail.com' },
+      { id: '1387453', fileName: 'guarantee-letter-abc...', pendingAge: '180', status: 'Not Started', owner: 'john@mail.com', receivedOn: '2025-07-21, 17:30', modifiedOn: '2025-07-21, 18:00', modifiedBy: 'john@mail.com' },
+      { id: '1387454', fileName: 'pre-admission-form...', pendingAge: '150', status: 'Not Started', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 16:20', modifiedOn: '2025-07-21, 16:45', modifiedBy: 'sarah@mail.com' },
+      { id: '1387455', fileName: 'invoice-pharmacy...', pendingAge: '120', status: 'Not Started', owner: 'mike@mail.com', receivedOn: '2025-07-21, 15:45', modifiedOn: '2025-07-21, 16:10', modifiedBy: 'mike@mail.com' },
+      { id: '1387456', fileName: 'medical-report-xyz...', pendingAge: '100', status: 'Completed', owner: 'lisa@mail.com', receivedOn: '2025-07-21, 14:30', modifiedOn: '2025-07-21, 15:00', modifiedBy: 'lisa@mail.com' },
+      { id: '1387457', fileName: 'claim-form-2024...', pendingAge: '80', status: 'Not Started', owner: 'name@mail.com', receivedOn: '2025-07-21, 13:15', modifiedOn: '2025-07-21, 13:45', modifiedBy: 'name@mail.com' },
+      { id: '1387458', fileName: 'receipt-consultation...', pendingAge: '60', status: 'Completed', owner: 'admin@mail.com', receivedOn: '2025-07-21, 12:00', modifiedOn: '2025-07-21, 12:30', modifiedBy: 'admin@mail.com' },
+      { id: '1387459', fileName: 'lab-results-patient...', pendingAge: '45', status: 'In Progress', owner: 'john@mail.com', receivedOn: '2025-07-21, 11:30', modifiedOn: '2025-07-21, 12:00', modifiedBy: 'john@mail.com' },
+      { id: '1387460', fileName: 'insurance-verification...', pendingAge: '30', status: 'Completed', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 10:45', modifiedOn: '2025-07-21, 11:15', modifiedBy: 'sarah@mail.com' },
+      { id: '1387461', fileName: 'billing-statement...', pendingAge: '25', status: 'Not Started', owner: 'mike@mail.com', receivedOn: '2025-07-21, 10:00', modifiedOn: '2025-07-21, 10:30', modifiedBy: 'mike@mail.com' },
+      { id: '1387462', fileName: 'referral-letter-dr...', pendingAge: '20', status: 'Not Started', owner: 'lisa@mail.com', receivedOn: '2025-07-21, 09:30', modifiedOn: '2025-07-21, 10:00', modifiedBy: 'lisa@mail.com' },
+      { id: '1387463', fileName: 'prescription-scan...', pendingAge: '15', status: 'Completed', owner: 'name@mail.com', receivedOn: '2025-07-21, 09:00', modifiedOn: '2025-07-21, 09:30', modifiedBy: 'name@mail.com' },
+      { id: '1387464', fileName: 'discharge-summary...', pendingAge: '12', status: 'Not Started', owner: 'john@mail.com', receivedOn: '2025-07-21, 08:45', modifiedOn: '2025-07-21, 09:15', modifiedBy: 'john@mail.com' },
+      { id: '1387465', fileName: 'follow-up-notes...', pendingAge: '8', status: 'In Progress', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 08:20', modifiedOn: '2025-07-21, 08:50', modifiedBy: 'sarah@mail.com' },
+      { id: '1387466', fileName: 'payment-receipt...', pendingAge: '5', status: 'In Progress', owner: 'mike@mail.com', receivedOn: '2025-07-21, 08:00', modifiedOn: '2025-07-21, 08:30', modifiedBy: 'mike@mail.com' },
+      { id: '1387467', fileName: 'surgery-report...', pendingAge: '3', status: 'Completed', owner: 'lisa@mail.com', receivedOn: '2025-07-21, 07:30', modifiedOn: '2025-07-21, 08:00', modifiedBy: 'lisa@mail.com' },
+      { id: '1387468', fileName: 'therapy-notes...', pendingAge: '90', status: 'In Progress', owner: 'john@mail.com', receivedOn: '2025-07-21, 06:45', modifiedOn: '2025-07-21, 07:15', modifiedBy: 'john@mail.com' },
+      { id: '1387469', fileName: 'consultation-fee...', pendingAge: '70', status: 'In Progress', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 06:00', modifiedOn: '2025-07-21, 06:30', modifiedBy: 'sarah@mail.com' },
+      { id: '1387470', fileName: 'ambulance-receipt...', pendingAge: '50', status: 'In Progress', owner: 'mike@mail.com', receivedOn: '2025-07-21, 05:30', modifiedOn: '2025-07-21, 06:00', modifiedBy: 'mike@mail.com' },
+      { id: '1387471', fileName: 'rehab-program...', pendingAge: '40', status: 'Not Started', owner: 'name@mail.com', receivedOn: '2025-07-21, 05:00', modifiedOn: '2025-07-21, 05:30', modifiedBy: 'name@mail.com' }
     ],
-    'In-Progress': [
-      { id: '1387452', fileName: 'invoice-medical-2024...', pendingAge: '200', status: 'In-Progress', owner: 'name@mail.com', receivedOn: '2025-07-21, 18:45', modifiedOn: '2025-07-21, 19:15', modifiedBy: 'name@mail.com' },
-      { id: '1387459', fileName: 'lab-results-patient...', pendingAge: '45', status: 'In-Progress', owner: 'john@mail.com', receivedOn: '2025-07-21, 11:30', modifiedOn: '2025-07-21, 12:00', modifiedBy: 'john@mail.com' },
-      { id: '1387466', fileName: 'payment-receipt...', pendingAge: '5', status: 'In-Progress', owner: 'mike@mail.com', receivedOn: '2025-07-21, 08:00', modifiedOn: '2025-07-21, 08:30', modifiedBy: 'mike@mail.com' }
+    'Not Started': [
+      { id: '1387453', fileName: 'guarantee-letter-abc...', pendingAge: '180', status: 'Not Started', owner: 'john@mail.com', receivedOn: '2025-07-21, 17:30', modifiedOn: '2025-07-21, 18:00', modifiedBy: 'john@mail.com' },
+      { id: '1387454', fileName: 'pre-admission-form...', pendingAge: '150', status: 'Not Started', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 16:20', modifiedOn: '2025-07-21, 16:45', modifiedBy: 'sarah@mail.com' },
+      { id: '1387455', fileName: 'invoice-pharmacy...', pendingAge: '120', status: 'Not Started', owner: 'mike@mail.com', receivedOn: '2025-07-21, 15:45', modifiedOn: '2025-07-21, 16:10', modifiedBy: 'mike@mail.com' },
+      { id: '1387457', fileName: 'claim-form-2024...', pendingAge: '80', status: 'Not Started', owner: 'name@mail.com', receivedOn: '2025-07-21, 13:15', modifiedOn: '2025-07-21, 13:45', modifiedBy: 'name@mail.com' },
+      { id: '1387461', fileName: 'billing-statement...', pendingAge: '25', status: 'Not Started', owner: 'mike@mail.com', receivedOn: '2025-07-21, 10:00', modifiedOn: '2025-07-21, 10:30', modifiedBy: 'mike@mail.com' },
+      { id: '1387462', fileName: 'referral-letter-dr...', pendingAge: '20', status: 'Not Started', owner: 'lisa@mail.com', receivedOn: '2025-07-21, 09:30', modifiedOn: '2025-07-21, 10:00', modifiedBy: 'lisa@mail.com' },
+      { id: '1387464', fileName: 'discharge-summary...', pendingAge: '12', status: 'Not Started', owner: 'john@mail.com', receivedOn: '2025-07-21, 08:45', modifiedOn: '2025-07-21, 09:15', modifiedBy: 'john@mail.com' },
+      { id: '1387471', fileName: 'rehab-program...', pendingAge: '40', status: 'Not Started', owner: 'name@mail.com', receivedOn: '2025-07-21, 05:00', modifiedOn: '2025-07-21, 05:30', modifiedBy: 'name@mail.com' }
     ],
-    'Pending Validation': [
-      { id: '1387453', fileName: 'guarantee-letter-abc...', pendingAge: '180', status: 'Pending Validation', owner: 'john@mail.com', receivedOn: '2025-07-21, 17:30', modifiedOn: '2025-07-21, 18:00', modifiedBy: 'john@mail.com' },
-      { id: '1387457', fileName: 'claim-form-2024...', pendingAge: '80', status: 'Pending Validation', owner: 'name@mail.com', receivedOn: '2025-07-21, 13:15', modifiedOn: '2025-07-21, 13:45', modifiedBy: 'name@mail.com' },
-      { id: '1387462', fileName: 'referral-letter-dr...', pendingAge: '20', status: 'Pending Validation', owner: 'lisa@mail.com', receivedOn: '2025-07-21, 09:30', modifiedOn: '2025-07-21, 10:00', modifiedBy: 'lisa@mail.com' },
-      { id: '1387464', fileName: 'discharge-summary...', pendingAge: '12', status: 'Pending Validation', owner: 'john@mail.com', receivedOn: '2025-07-21, 08:45', modifiedOn: '2025-07-21, 09:15', modifiedBy: 'john@mail.com' }
+    'In Progress': [
+      { id: '1387452', fileName: 'invoice-medical-2024...', pendingAge: '200', status: 'In Progress', owner: 'name@mail.com', receivedOn: '2025-07-21, 18:45', modifiedOn: '2025-07-21, 19:15', modifiedBy: 'name@mail.com' },
+      { id: '1387459', fileName: 'lab-results-patient...', pendingAge: '45', status: 'In Progress', owner: 'john@mail.com', receivedOn: '2025-07-21, 11:30', modifiedOn: '2025-07-21, 12:00', modifiedBy: 'john@mail.com' },
+      { id: '1387465', fileName: 'follow-up-notes...', pendingAge: '8', status: 'In Progress', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 08:20', modifiedOn: '2025-07-21, 08:50', modifiedBy: 'sarah@mail.com' },
+      { id: '1387466', fileName: 'payment-receipt...', pendingAge: '5', status: 'In Progress', owner: 'mike@mail.com', receivedOn: '2025-07-21, 08:00', modifiedOn: '2025-07-21, 08:30', modifiedBy: 'mike@mail.com' },
+      { id: '1387468', fileName: 'therapy-notes...', pendingAge: '90', status: 'In Progress', owner: 'john@mail.com', receivedOn: '2025-07-21, 06:45', modifiedOn: '2025-07-21, 07:15', modifiedBy: 'john@mail.com' },
+      { id: '1387469', fileName: 'consultation-fee...', pendingAge: '70', status: 'In Progress', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 06:00', modifiedOn: '2025-07-21, 06:30', modifiedBy: 'sarah@mail.com' },
+      { id: '1387470', fileName: 'ambulance-receipt...', pendingAge: '50', status: 'In Progress', owner: 'mike@mail.com', receivedOn: '2025-07-21, 05:30', modifiedOn: '2025-07-21, 06:00', modifiedBy: 'mike@mail.com' }
     ],
-    'System Process': [
-      { id: '1387454', fileName: 'pre-admission-form...', pendingAge: '150', status: 'System Process', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 16:20', modifiedOn: '2025-07-21, 16:45', modifiedBy: 'sarah@mail.com' },
-      { id: '1387465', fileName: 'follow-up-notes...', pendingAge: '8', status: 'System Process', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 08:20', modifiedOn: '2025-07-21, 08:50', modifiedBy: 'sarah@mail.com' }
-    ],
-    'Pending Pickup': [
-      { id: '1387455', fileName: 'invoice-pharmacy...', pendingAge: '120', status: 'Pending Pickup', owner: 'mike@mail.com', receivedOn: '2025-07-21, 15:45', modifiedOn: '2025-07-21, 16:10', modifiedBy: 'mike@mail.com' },
-      { id: '1387461', fileName: 'billing-statement...', pendingAge: '25', status: 'Pending Pickup', owner: 'mike@mail.com', receivedOn: '2025-07-21, 10:00', modifiedOn: '2025-07-21, 10:30', modifiedBy: 'mike@mail.com' },
-      { id: '1387471', fileName: 'rehab-program...', pendingAge: '40', status: 'Pending Pickup', owner: 'name@mail.com', receivedOn: '2025-07-21, 05:00', modifiedOn: '2025-07-21, 05:30', modifiedBy: 'name@mail.com' }
-    ],
-    'Approved': [
-      { id: '1387456', fileName: 'medical-report-xyz...', pendingAge: '100', status: 'Approved', owner: 'lisa@mail.com', receivedOn: '2025-07-21, 14:30', modifiedOn: '2025-07-21, 15:00', modifiedBy: 'lisa@mail.com' },
-      { id: '1387463', fileName: 'prescription-scan...', pendingAge: '15', status: 'Approved', owner: 'name@mail.com', receivedOn: '2025-07-21, 09:00', modifiedOn: '2025-07-21, 09:30', modifiedBy: 'name@mail.com' },
-      { id: '1387468', fileName: 'therapy-notes...', pendingAge: '90', status: 'Approved', owner: 'john@mail.com', receivedOn: '2025-07-21, 06:45', modifiedOn: '2025-07-21, 07:15', modifiedBy: 'john@mail.com' }
-    ],
-    'Rejected': [
-      { id: '1387458', fileName: 'receipt-consultation...', pendingAge: '60', status: 'Rejected', owner: 'admin@mail.com', receivedOn: '2025-07-21, 12:00', modifiedOn: '2025-07-21, 12:30', modifiedBy: 'admin@mail.com' },
-      { id: '1387469', fileName: 'consultation-fee...', pendingAge: '70', status: 'Rejected', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 06:00', modifiedOn: '2025-07-21, 06:30', modifiedBy: 'sarah@mail.com' }
-    ],
-    'Closed': [
-      { id: '1387460', fileName: 'insurance-verification...', pendingAge: '30', status: 'Closed', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 10:45', modifiedOn: '2025-07-21, 11:15', modifiedBy: 'sarah@mail.com' },
-      { id: '1387470', fileName: 'ambulance-receipt...', pendingAge: '50', status: 'Closed', owner: 'mike@mail.com', receivedOn: '2025-07-21, 05:30', modifiedOn: '2025-07-21, 06:00', modifiedBy: 'mike@mail.com' }
-    ],
-    'No Anomalies': [
-      { id: '1387467', fileName: 'surgery-report...', pendingAge: '3', status: 'No Anomalies', owner: 'lisa@mail.com', receivedOn: '2025-07-21, 07:30', modifiedOn: '2025-07-21, 08:00', modifiedBy: 'lisa@mail.com' }
+    'Completed': [
+      { id: '1387456', fileName: 'medical-report-xyz...', pendingAge: '100', status: 'Completed', owner: 'lisa@mail.com', receivedOn: '2025-07-21, 14:30', modifiedOn: '2025-07-21, 15:00', modifiedBy: 'lisa@mail.com' },
+      { id: '1387458', fileName: 'receipt-consultation...', pendingAge: '60', status: 'Completed', owner: 'admin@mail.com', receivedOn: '2025-07-21, 12:00', modifiedOn: '2025-07-21, 12:30', modifiedBy: 'admin@mail.com' },
+      { id: '1387460', fileName: 'insurance-verification...', pendingAge: '30', status: 'Completed', owner: 'sarah@mail.com', receivedOn: '2025-07-21, 10:45', modifiedOn: '2025-07-21, 11:15', modifiedBy: 'sarah@mail.com' },
+      { id: '1387463', fileName: 'prescription-scan...', pendingAge: '15', status: 'Completed', owner: 'name@mail.com', receivedOn: '2025-07-21, 09:00', modifiedOn: '2025-07-21, 09:30', modifiedBy: 'name@mail.com' },
+      { id: '1387467', fileName: 'surgery-report...', pendingAge: '3', status: 'Completed', owner: 'lisa@mail.com', receivedOn: '2025-07-21, 07:30', modifiedOn: '2025-07-21, 08:00', modifiedBy: 'lisa@mail.com' }
     ]
   };
   
   const documents = allDocumentsData[activeTab] || [];
+  const filteredDocuments = getFilteredDocuments(documents);
+  const totalPages = getTotalPages(filteredDocuments.length);
+  const paginatedDocuments = getPaginatedDocuments(filteredDocuments);
+  
+  // Reset to page 1 when tab changes or filters change
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [activeTab, activeFilters, searchQuery]);
   
   return (
     <div className="min-h-screen bg-gray-50">
@@ -432,7 +480,7 @@ const DashboardScreen = ({ onDocumentClick }) => {
         {/* Search Results Count */}
         {searchQuery && (
           <div className="mb-4 text-sm text-gray-600">
-            Found {getFilteredDocuments(documents).length} result{getFilteredDocuments(documents).length !== 1 ? 's' : ''} for "{searchQuery}"
+            Found {filteredDocuments.length} result{filteredDocuments.length !== 1 ? 's' : ''} for "{searchQuery}"
           </div>
         )}
       </div>
@@ -454,7 +502,7 @@ const DashboardScreen = ({ onDocumentClick }) => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {getFilteredDocuments(documents).map((doc) => (
+              {paginatedDocuments.map((doc) => (
                 <tr key={doc.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-4 py-3">
                     <button
@@ -483,28 +531,66 @@ const DashboardScreen = ({ onDocumentClick }) => {
           {/* Pagination */}
           <div className="px-4 py-3 border-t border-gray-200 flex items-center justify-between bg-gray-50">
             <div className="flex items-center gap-2">
-              <button className="p-1.5 hover:bg-gray-200 rounded transition-colors disabled:opacity-50" disabled>
+              <button 
+                onClick={() => handlePageChange(1)}
+                disabled={currentPage === 1}
+                className="p-1.5 hover:bg-gray-200 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
                 <ChevronsLeft className="w-4 h-4 text-gray-600" />
               </button>
-              <button className="p-1.5 hover:bg-gray-200 rounded transition-colors disabled:opacity-50" disabled>
+              <button 
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="p-1.5 hover:bg-gray-200 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
                 <ChevronLeft className="w-4 h-4 text-gray-600" />
               </button>
-              <button className="min-w-[32px] h-8 px-2 bg-blue-600 text-white rounded font-medium text-sm">
-                1
-              </button>
-              <button className="p-1.5 hover:bg-gray-200 rounded transition-colors">
+              
+              {getPageNumbers(totalPages).map((page) => (
+                <button
+                  key={page}
+                  onClick={() => handlePageChange(page)}
+                  className={`min-w-[32px] h-8 px-2 rounded font-medium text-sm transition-colors ${
+                    currentPage === page
+                      ? 'bg-blue-600 text-white'
+                      : 'hover:bg-gray-200 text-gray-700'
+                  }`}
+                >
+                  {page}
+                </button>
+              ))}
+              
+              <button 
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="p-1.5 hover:bg-gray-200 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
                 <ChevronRight className="w-4 h-4 text-gray-600" />
               </button>
-              <button className="p-1.5 hover:bg-gray-200 rounded transition-colors">
+              <button 
+                onClick={() => handlePageChange(totalPages)}
+                disabled={currentPage === totalPages}
+                className="p-1.5 hover:bg-gray-200 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
                 <ChevronsRight className="w-4 h-4 text-gray-600" />
               </button>
             </div>
             
             <div className="flex items-center gap-2">
-              <select className="px-3 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:border-blue-500">
-                <option>10</option>
-                <option>25</option>
-                <option>50</option>
+              <span className="text-sm text-gray-600">
+                Showing {Math.min((currentPage - 1) * itemsPerPage + 1, filteredDocuments.length)} to {Math.min(currentPage * itemsPerPage, filteredDocuments.length)} of {filteredDocuments.length} results
+              </span>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <select 
+                value={itemsPerPage}
+                onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
+                className="px-3 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:border-blue-500"
+              >
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
               </select>
               <span className="text-sm text-gray-600">items per page</span>
             </div>
