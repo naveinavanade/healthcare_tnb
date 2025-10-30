@@ -3503,6 +3503,34 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
               </div>
             </div>
             <div className="text-xs text-gray-500 mb-4">8:00 PM</div>
+            
+            {/* Second User Message */}
+            <div className="flex justify-end mb-4">
+              <div className="flex items-start gap-2 max-w-[85%]">
+                <div className="bg-blue-600 text-white rounded-2xl rounded-tr-none px-4 py-3 shadow-md">
+                  <p className="text-sm">Can you show me which page is the Surgical Materials</p>
+                </div>
+                <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div className="text-xs text-gray-500 text-right mb-4">8:02 PM</div>
+            
+            {/* Second Bot Message */}
+            <div className="flex justify-start mb-4">
+              <div className="flex items-start gap-2 max-w-[85%]">
+                <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">
+                  <span className="text-xs font-bold">AI</span>
+                </div>
+                <div className="bg-white rounded-2xl rounded-tl-none px-4 py-3 shadow-md border border-gray-200">
+                  <p className="text-sm text-gray-800">The Surgical Materials information is located on page 2 of the document.</p>
+                </div>
+              </div>
+            </div>
+            <div className="text-xs text-gray-500 mb-4">8:02 PM</div>
           </div>
           
           {/* Input Area */}
