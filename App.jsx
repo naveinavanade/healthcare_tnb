@@ -1538,20 +1538,25 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
   };
   
   const lineItems = [
-    { label: 'Pharmacy Items', value: 'MULTIVITAMIN AND MINERAL COMPOSITE (SET)', status: 'Coverage Policy', flagged: true, reason: `The multivitamin and mineral composite matches Rule 214 which specifically covers 'Other vitamins and supplements not listed in List A & B' and is explicitly marked as 'Not Covered'`, amount: 85.00 },
-    { label: 'Pharmacy Items', value: 'CETAPHIL LOTION (237ML)', status: 'Coverage Policy', flagged: true, reason: `1.The item CETAPHIL LOTION matches Rule 182 which specifically covers 'Cleanser | Cetaphil', but this rule has a status of 'Not Covered'. 
+    { label: 'Pharmacy Items', value: 'MULTIVITAMIN AND MINERAL COMPOSITE (SET)', status: 'Not Covered', flagged: true, reason: `The multivitamin and mineral composite matches Rule 214 which specifically covers 'Other vitamins and supplements not listed in List A & B' and is explicitly marked as 'Not Covered'`, amount: 85.00 },
+    { label: 'Pharmacy Items', value: 'CETAPHIL LOTION (237ML)', status: 'Not Covered', flagged: true, reason: `1.The item CETAPHIL LOTION matches Rule 182 which specifically covers 'Cleanser | Cetaphil', but this rule has a status of 'Not Covered'. 
 2.While Cetaphil is explicitly mentioned in the rule, it refers to cleanser products rather than lotion/moisturizer formulations. 
 3.Additionally, none of the patient's diagnoses (ovarian cyst, sepsis, hypoxemia, LRTI, indigestion, abdominal pain, altered bowel habit, heartburn, hypertension, diabetes) are related to dermatological conditions that would typically require emollients or skin care products.`, amount: 150.00 },
-    { label: 'Pharmacy Items', value: 'AMOXYCILLIN/ CLAV K TAB 625MG [AUGMENTIN 625]', status: 'Coverage Policy', flagged: true, reason: `1.The invoice item is Amoxicillin/Clavulanic Acid 625mg tablets (an antibiotic medication) 
+    { label: 'Pharmacy Items', value: 'AMOXYCILLIN/ CLAV K TAB 625MG [AUGMENTIN 625]', status: 'Not Covered', flagged: true, reason: `1.The invoice item is Amoxicillin/Clavulanic Acid 625mg tablets (an antibiotic medication) 
 2.Despite the patient having diagnoses like Sepsis and Lower Respiratory Tract Infection that would clinically justify antibiotic treatment, no guideline rule exists in this set that covers antibiotic medications.`, amount: 85.00 },
-    { label: 'Pharmacy Items', value: 'ESOMEPRAZOLE TAB 40MG [NEXIUM 40]', status: 'Coverage Policy', flagged: true, reason: `1.The invoice item is Esomeprazole 40mg tablet (a proton pump inhibitor used for GERD/acid reflux).
+    { label: 'Pharmacy Items', value: 'ESOMEPRAZOLE TAB 40MG [NEXIUM 40]', status: 'Not Covered', flagged: true, reason: `1.The invoice item is Esomeprazole 40mg tablet (a proton pump inhibitor used for GERD/acid reflux).
 2.While the patient has relevant diagnoses including indigestion, heartburn, and abdominal pain that are gastrointestinal-related, none of the items found in medical guideline rule that covers this specific medication.`, amount: 120.00 },
-    { label: 'Medical Services', value: 'SOCIO / COGNITIVE COMMUNICATION INTERVENTION', status: 'Coverage Policy', flagged: true, reason: 'Flagged because the total number of prescribed Panadol is exceeding the allocated limit for 1 Month', amount: 95.00 },
-    { label: 'Medical Services', value: 'SOCIO / COGNITIVE COMMUNICATION INTERVENTION', status: 'Coverage Policy', flagged: true, reason: 'Flagged because the total number of prescribed Panadol is exceeding the allocated limit for 1 Month', amount: 95.00 },
-    { label: 'Medical Supplies/Aid', value: 'DISPOSABLE GOWN APRON PVC', status: 'Coverage Policy', flagged: true, reason: `The item 'DISPOSABLE GOWN APRON PVC' is a medical protective equipment/supply item, but the item is not found in any medical guideline rule and has no clinically or semantically matching entries.`, amount: 95.00 },
-    { label: 'Medical Supplies/Aid', value: `Micropore 3\\"Tape (per metre)"`, status: 'Coverage Policy', flagged: true, reason: `1. Micropore 3\\" Tape is a medical adhesive tape used for wound dressing and securing medical devices.
+    { label: 'Procedures', value: 'C REACTIVE PROTEIN (CRP)', status: 'Not Covered', flagged: true, reason: `1.The item 'C REACTIVE PROTEIN (CRP)' is a laboratory test used to measure inflammation markers, not a medication or supplement. 
+2.None of the provided rules cover laboratory tests - all rules are for Vitamin C supplements or protein/enzyme products, which are completely different from a diagnostic blood test. 
+3.The item is not found in any medical guideline rule and has no clinically or semantically matching entries.`, amount: 95.00 },
+    { label: 'Procedures', value: 'LIPID PROFILE (P12)', status: 'Not Covered', flagged: true, reason: `1.The item 'LIPID PROFILE (P12)' is a diagnostic laboratory test
+2.The item is not found in any medical guideline rule and has no clinically or semantically matching entries`, amount: 95.00 },
+    { label: 'Medical Supplies/Aid', value: 'DISPOSABLE GOWN APRON PVC', status: 'Not Covered', flagged: true, reason: `The item 'DISPOSABLE GOWN APRON PVC' is a medical protective equipment/supply item, but the item is not found in any medical guideline rule and has no clinically or semantically matching entries.`, amount: 95.00 },
+    { label: 'Medical Supplies/Aid', value: `Micropore 3\\"Tape (per metre)"`, status: 'Not Covered', flagged: true, reason: `1. Micropore 3\\" Tape is a medical adhesive tape used for wound dressing and securing medical devices.
 2. The item is not found in any medical guideline rule and has no clinically or semantically matching entries.`, amount: 95.00 },
-    { label: 'Consultation Fee', value: 'CONSULTATION CHARGE UNDER DR SARAVANAN', status: 'Exceeded coverage limit', flagged: true, reason: 'Flagged because the total number of prescribed Panadol is exceeding the allocated limit for 1 Month', amount: 180.00 }
+    { label: 'Consultation Fee', value: 'Professional Fee: Cervical Or Vaginal Smear Pap Smear', status: 'Exceeded coverage limit', flagged: true, reason: `1.The item 'Professional Fee: Cervical Or Vaginal Smear Pap Smear' is a medical procedure/professional service fee, but none of the provided rules cover diagnostic procedures or professional fees for Pap smears. 
+2.The top matching rules only cover prescription fees, dispensing fees, and vaginal cream medications, which are not clinically or semantically related to a Pap smear procedure. 
+3.The item is not found in any medical guideline rule and has no clinically or semantically matching entries`, amount: 180.00 }
   ];
   
   const handleInfoClick = (event, reason) => {
@@ -2129,7 +2134,7 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
                     {fieldStates[index].rejected && !fieldStates[index].approved && (
                       <div className="mt-2">
                         <div className="flex items-center gap-3 mb-2">
-                          <span className="text-sm text-red-600 font-medium">Coverage Policy</span>
+                          <span className="text-sm text-red-600 font-medium">Not Covered</span>
                           <label className="flex items-center gap-2 cursor-pointer">
                             <input
                               type="checkbox"
@@ -2256,7 +2261,7 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
                     {item.rejected && !item.approved && (
                       <div className="mt-2">
                         <div className="flex items-center gap-3 mb-2">
-                          <span className="text-sm text-red-600 font-medium">Coverage Policy</span>
+                          <span className="text-sm text-red-600 font-medium">Not Covered</span>
                           <label className="flex items-center gap-2 cursor-pointer">
                             <input
                               type="checkbox"
@@ -3043,7 +3048,7 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
                           {item.rejected && !item.approved && (
                             <div className="mt-2">
                               <div className="flex items-center gap-3 mb-2">
-                                <span className="text-sm text-red-600 font-medium">Coverage Policy</span>
+                                <span className="text-sm text-red-600 font-medium">Not Covered</span>
                                 <label className="flex items-center gap-2 cursor-pointer">
                                   <input
                                     type="checkbox"
