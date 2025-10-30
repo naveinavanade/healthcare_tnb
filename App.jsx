@@ -768,8 +768,35 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
   const [showBearerDialog, setShowBearerDialog] = useState(false);
   const [selectedBearerFieldIndex, setSelectedBearerFieldIndex] = useState(null);
+  const [showGuidelineDropdown, setShowGuidelineDropdown] = useState(false);
   
   const mainTabs = ['Invoices', 'Guarantee Letter (GL)', 'Pre-Admission Form (PAF)', 'Cross Referral (CR)', 'Additional Guarantee (AG)', 'Others'];
+  
+  // Guideline dropdown options
+  const guidelineOptions = [
+    {
+      name: '5TH MMA FEE -EDITION',
+      url: 'https://ts.accenture.com/:b:/r/sites/AAAMSDelivery/Shared%20Documents/General/02%20App%20Development%20(AD)/2025%20-%2001%20-%20Healthcare%20Digitization/Functional_Docs/TNB%20Medical%20Guidelines%20and%20Fees/5TH%20MMA%20FEE%20-EDITION-VERSION-2.0-2020.pdf?csf=1&web=1&e=Txu6GV'
+    },
+    {
+      name: '7. MMA 13th fee schedule',
+      url: 'https://ts.accenture.com/:b:/r/sites/AAAMSDelivery/Shared%20Documents/General/02%20App%20Development%20(AD)/2025%20-%2001%20-%20Healthcare%20Digitization/Functional_Docs/TNB%20Medical%20Guidelines%20and%20Fees/7.%20MMA%2013th%20fee%20schedule.pdf?csf=1&web=1&e=mqHplJ'
+    },
+    {
+      name: 'Final Bill Assessment',
+      url: 'https://ts.accenture.com/:x:/r/sites/AAAMSDelivery/Shared%20Documents/General/02%20App%20Development%20(AD)/2025%20-%2001%20-%20Healthcare%20Digitization/Functional_Docs/TNB%20Medical%20Guidelines%20and%20Fees/Final%20Bill%20Assessment%20Guidelines%20Edited%2009072025.xlsx?d=w8c21e340a447460e9a4be78eaa29732f&csf=1&web=1&e=hjg1E6'
+    },
+    {
+      name: 'MEDICAL GUIDELINES',
+      url: 'https://ts.accenture.com/:b:/r/sites/AAAMSDelivery/Shared%20Documents/General/02%20App%20Development%20(AD)/2025%20-%2001%20-%20Healthcare%20Digitization/Functional_Docs/TNB%20Medical%20Guidelines%20and%20Fees/MEDICAL%20GUIDELINES%20HOSP%20VER%204.0.pdf?csf=1&web=1&e=nyJDFs'
+    }
+  ];
+  
+  // Handler for opening guideline links
+  const handleGuidelineClick = (url) => {
+    window.open(url, '_blank');
+    setShowGuidelineDropdown(false);
+  };
   
   const [expandedAccordions, setExpandedAccordions] = useState({
     documentReview: false,
@@ -1375,7 +1402,7 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
     8: { approved: false, rejected: false, rejectionReason: '', rejectionSubmitted: false, mmuValidation: false, bearer: 'hospital', bearerSelected: false, systemAssessment: false }
   });
   
-  const [pdfScale, setPdfScale] = useState(1.0);
+  const [pdfScale, setPdfScale] = useState(0.8);
   
   const [dynamicMedicalPolicyFields, setDynamicMedicalPolicyFields] = useState([]);
   const [dynamicOtherPolicyFields, setDynamicOtherPolicyFields] = useState([]);
@@ -1749,10 +1776,42 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
             Flagged
           </span>
         </div>
-        <button className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-5 py-2.5 rounded-lg hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl transition-all font-semibold">
-          <HelpCircle className="w-4 h-4" />
-          Guideline
-        </button>
+        <div className="relative">
+          <button 
+            onClick={() => setShowGuidelineDropdown(!showGuidelineDropdown)}
+            className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-5 py-2.5 rounded-lg hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl transition-all font-semibold"
+          >
+            <HelpCircle className="w-4 h-4" />
+            Guideline
+            <ChevronDown className={`w-4 h-4 transition-transform ${showGuidelineDropdown ? 'rotate-180' : ''}`} />
+          </button>
+          
+          {/* Dropdown Menu */}
+          {showGuidelineDropdown && (
+            <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 z-50 py-2">
+              {guidelineOptions.map((option, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleGuidelineClick(option.url)}
+                  className="w-full text-left px-4 py-3 hover:bg-blue-50 transition-colors flex items-center gap-3 border-b border-gray-100 last:border-b-0"
+                >
+                  <HelpCircle className="w-4 h-4 text-blue-600 flex-shrink-0" />
+                  <span className="text-sm font-medium text-gray-700 hover:text-blue-700">
+                    {option.name}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+          
+          {/* Overlay to close dropdown when clicking outside */}
+          {showGuidelineDropdown && (
+            <div 
+              className="fixed inset-0 z-40" 
+              onClick={() => setShowGuidelineDropdown(false)}
+            />
+          )}
+        </div>
       </div>
       
       <div className="border-b bg-white shadow-sm">
@@ -1761,7 +1820,7 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
             <button
               key={tab}
               onClick={() => handleTabChange(tab)}
-              className={`py-1.5 px-2 text-xs font-medium border-b-2 transition-all whitespace-nowrap flex-shrink-0 ${
+              className={`py-3 px-4 text-sm font-medium border-b-2 transition-all whitespace-nowrap flex-shrink-0 ${
                 activeMainTab === tab
                   ? 'border-blue-600 text-blue-600 bg-blue-50'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50'
@@ -1773,8 +1832,8 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
         </div>
       </div>
       
-      <div className="flex h-[calc(100vh-180px)] gap-2">
-        <div className="w-2/5 bg-gradient-to-br from-gray-50 to-blue-50 p-3 flex flex-col">
+      <div className="flex h-[calc(100vh-180px)] gap-4">
+        <div className="w-[45%] bg-gradient-to-br from-gray-50 to-blue-50 p-4 flex flex-col">
           <div 
             className="bg-white rounded-2xl shadow-xl mb-4 p-5 flex-1 flex flex-col border border-gray-100 relative"
             onMouseEnter={() => setShowPdfControls(true)}
@@ -1873,7 +1932,7 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
           </div>
         </div>
         
-        <div className="w-3/5 bg-gradient-to-br from-white to-blue-50 p-3 overflow-y-auto">
+        <div className="w-[55%] bg-gradient-to-br from-white to-blue-50 p-4 overflow-y-auto">
           
           {/* Accordion: Document Review */}
           <div className="mb-3 border-2 border-gray-200 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow">
@@ -1917,7 +1976,7 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
                         value={documentReviewFields.agTopUp.systemCollection}
                         onChange={() => {}} 
                         readOnly
-                        className="w-32 border border-gray-200 rounded px-2 py-1 text-xs bg-gray-100 text-gray-600 cursor-not-allowed"
+                        className="w-16 border border-gray-200 rounded px-2 py-1 text-xs bg-gray-100 text-gray-600 cursor-not-allowed"
                       />
                     </div>
                     <div className="flex items-center gap-2 flex-1">
@@ -1930,7 +1989,7 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
                           agTopUp: { ...prev.agTopUp, agentObserved: e.target.value }
                         }))}
                         placeholder="Enter value"
-                        className="w-32 border border-gray-300 rounded px-2 py-1 text-xs focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition-all"
+                        className="w-20 border border-gray-300 rounded px-2 py-1 text-xs focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition-all"
                       />
                     </div>
                     <input
@@ -1953,7 +2012,7 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
                         value={documentReviewFields.paf.systemCollection}
                         onChange={() => {}}
                         readOnly
-                        className="w-32 border border-gray-200 rounded px-2 py-1 text-xs bg-gray-100 text-gray-600 cursor-not-allowed"
+                        className="w-16 border border-gray-200 rounded px-2 py-1 text-xs bg-gray-100 text-gray-600 cursor-not-allowed"
                       />
                     </div>
                     <div className="flex items-center gap-2 flex-1">
@@ -1966,7 +2025,7 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
                           paf: { ...prev.paf, agentObserved: e.target.value }
                         }))}
                         placeholder="Enter value"
-                        className="w-32 border border-gray-300 rounded px-2 py-1 text-xs focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition-all"
+                        className="w-20 border border-gray-300 rounded px-2 py-1 text-xs focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition-all"
                       />
                     </div>
                     <input
@@ -1989,7 +2048,7 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
                         value={documentReviewFields.cr.systemCollection}
                         onChange={() => {}}
                         readOnly
-                        className="w-32 border border-gray-200 rounded px-2 py-1 text-xs bg-gray-100 text-gray-600 cursor-not-allowed"
+                        className="w-16 border border-gray-200 rounded px-2 py-1 text-xs bg-gray-100 text-gray-600 cursor-not-allowed"
                       />
                     </div>
                     <div className="flex items-center gap-2 flex-1">
@@ -2002,7 +2061,7 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
                           cr: { ...prev.cr, agentObserved: e.target.value }
                         }))}
                         placeholder="Enter value"
-                        className="w-32 border border-gray-300 rounded px-2 py-1 text-xs focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition-all"
+                        className="w-20 border border-gray-300 rounded px-2 py-1 text-xs focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition-all"
                       />
                     </div>
                     <input
@@ -2025,7 +2084,7 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
                         value={documentReviewFields.invoice.systemCollection}
                         onChange={() => {}}
                         readOnly
-                        className="w-32 border border-gray-200 rounded px-2 py-1 text-xs bg-gray-100 text-gray-600 cursor-not-allowed"
+                        className="w-16 border border-gray-200 rounded px-2 py-1 text-xs bg-gray-100 text-gray-600 cursor-not-allowed"
                       />
                     </div>
                     <div className="flex items-center gap-2 flex-1">
@@ -2038,7 +2097,7 @@ const DocumentDetailScreen = ({ documentId, onBack }) => {
                           invoice: { ...prev.invoice, agentObserved: e.target.value }
                         }))}
                         placeholder="Enter value"
-                        className="w-32 border border-gray-300 rounded px-2 py-1 text-xs focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition-all"
+                        className="w-20 border border-gray-300 rounded px-2 py-1 text-xs focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition-all"
                       />
                     </div>
                     <input
